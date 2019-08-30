@@ -13,6 +13,7 @@
 		160181042319D459005EBD82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160181032319D459005EBD82 /* Assets.xcassets */; };
 		160181072319D459005EBD82 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160181062319D459005EBD82 /* Preview Assets.xcassets */; };
 		1601810A2319D459005EBD82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 160181082319D459005EBD82 /* LaunchScreen.storyboard */; };
+		C887A44E560C1DC8B2D870FE /* Pods_Sententia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2365354654737172A4CE40 /* Pods_Sententia.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,9 @@
 		160181062319D459005EBD82 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		160181092319D459005EBD82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1601810B2319D459005EBD82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B2365354654737172A4CE40 /* Pods_Sententia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sententia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		540F8B5E8DB8B9911695013D /* Pods-Sententia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sententia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sententia/Pods-Sententia.release.xcconfig"; sourceTree = "<group>"; };
+		57BCF45E482EE7669677A5CA /* Pods-Sententia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sententia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sententia/Pods-Sententia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C887A44E560C1DC8B2D870FE /* Pods_Sententia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +47,8 @@
 			children = (
 				160180FC2319D457005EBD82 /* Sententia */,
 				160180FB2319D457005EBD82 /* Products */,
+				D3ACD25CA7F0A2D9CC7415E0 /* Pods */,
+				97889A016FF96DC15A03CD72 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,6 +82,23 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		97889A016FF96DC15A03CD72 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1B2365354654737172A4CE40 /* Pods_Sententia.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D3ACD25CA7F0A2D9CC7415E0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				57BCF45E482EE7669677A5CA /* Pods-Sententia.debug.xcconfig */,
+				540F8B5E8DB8B9911695013D /* Pods-Sententia.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -82,9 +106,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1601810E2319D459005EBD82 /* Build configuration list for PBXNativeTarget "Sententia" */;
 			buildPhases = (
+				A9B13AD9CDB2843F17D61641 /* [CP] Check Pods Manifest.lock */,
 				160180F62319D457005EBD82 /* Sources */,
 				160180F72319D457005EBD82 /* Frameworks */,
 				160180F82319D457005EBD82 /* Resources */,
+				D3740992EFD5FC49EE012343 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -140,6 +166,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A9B13AD9CDB2843F17D61641 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Sententia-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D3740992EFD5FC49EE012343 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Sententia/Pods-Sententia-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sententia/Pods-Sententia-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		160180F62319D457005EBD82 /* Sources */ = {
@@ -282,6 +347,7 @@
 		};
 		1601810F2319D459005EBD82 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 57BCF45E482EE7669677A5CA /* Pods-Sententia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -302,6 +368,7 @@
 		};
 		160181102319D459005EBD82 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 540F8B5E8DB8B9911695013D /* Pods-Sententia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
