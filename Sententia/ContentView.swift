@@ -28,7 +28,7 @@ class NetworkManager: BindableObject {
     }
 
     init() {
-        guard let url = URL(string: "https://api.myjson.com/bins/1fb713") else {
+        guard let url = URL(string: "https://api.myjson.com/bins/17qd9r") else {
             return
         }
         URLSession.shared.dataTask(with: url) { (data, _, _) in
@@ -37,12 +37,13 @@ class NetworkManager: BindableObject {
 
             let users = try! JSONDecoder().decode([User].self, from: data)
             DispatchQueue.main.async {
-                self.users = users
+                self.users = users.shuffled()
             }
 
             print("fetched json")
             }.resume()
     }
+    
 }
 
 // MARK:- Image View
@@ -76,13 +77,17 @@ struct UserRow: View {
                     Text("@\(user.userName)").font(.subheadline)
                     
                     HStack {
-                        Text(user.datePosted).font(.footnote).italic()
+                        Text(user.datePosted).italic()
                     }
                     
                 }
                 
-                VStack (alignment: .trailing) {
-                    Text(user.message).lineLimit(nil)
+                VStack (alignment: .leading) {
+                    Text(user.message).lineLimit(nil).frame(maxHeight: .infinity)
+                }
+                
+                HStack {
+                    Spacer()
                 }
 
                 HStack {
@@ -97,9 +102,9 @@ struct UserRow: View {
                     Image("globe_dark")
                         .resizable()
                         .frame(width: 20, height: 20)
-                    Text(user.location).italic()
+                    Text(user.location).italic().font(.system(size: 10))
                 }
-            }
+            }.padding(.leading, 5)
             
         }
     }
@@ -142,7 +147,7 @@ struct ContentView : View {
                 ForEach(networkManager.users.identified(by: \.id)) { user in
                     UserRow(user: user)
                 }
-            }.navigationBarTitle(Text("Sententia"))
+            }.navigationBarTitle(Text("Rōmānī"))
 
         }
     }
