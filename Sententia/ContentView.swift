@@ -7,13 +7,60 @@
 //
 
 import SwiftUI
+import Combine
 
 // MARK:- User Model
-struct User: Identifiable {
+struct User: Identifiable, Decodable {
     var id: Int
     
     let displayName, userName, userImage, message, datePosted, location: String
     let numLikes, numDislikes: Int
+}
+
+// MARK:- Network Manager
+class NetworkManager: BindableObject {
+    var didChange = PassthroughSubject<NetworkManager, Never>()
+
+    var users = [User]() {
+        didSet {
+            didChange.send(self)
+        }
+    }
+
+    init() {
+        guard let url = URL(string: "https://api.myjson.com/bins/1fb713") else {
+            return
+        }
+        URLSession.shared.dataTask(with: url) { (data, _, _) in
+
+            guard let data = data else { return }
+
+            let users = try! JSONDecoder().decode([User].self, from: data)
+            DispatchQueue.main.async {
+                self.users = users
+            }
+
+            print("fetched json")
+            }.resume()
+    }
+}
+
+// MARK:- Image View
+struct ImageViewWidget: View {
+    
+    @ObjectBinding var imageLoader: ImageLoader
+    
+    init(imageUrl: String) {
+        imageLoader = ImageLoader(imageUrl: imageUrl)
+    }
+    
+    var body: some View {
+        Image(uiImage: (imageLoader.data.count == 0) ? UIImage(named: "globe_light")! : UIImage(data: imageLoader.data)!)
+            .resizable()
+            .clipShape(Circle())
+            .overlay(Circle().stroke(Color.black, lineWidth: 1))
+            .frame(width: 70, height: 70)
+    }
 }
 
 // MARK:- User Row
@@ -22,11 +69,7 @@ struct UserRow: View {
     
     var body: some View {
         HStack {
-//            Image("veronica")
-//                .resizable()
-//                .clipShape(Circle())
-//                .overlay(Circle().stroke(Color.gray, lineWidth: 0.5))
-//                .frame(width: 70, height: 70)
+            ImageViewWidget(imageUrl: user.userImage)
             VStack (alignment: .leading) {
                 HStack {
                     Text(user.displayName).bold()
@@ -41,7 +84,7 @@ struct UserRow: View {
                 VStack (alignment: .trailing) {
                     Text(user.message).lineLimit(nil)
                 }
-                
+
                 HStack {
                     Image("thumb_up_dark")
                         .resizable()
@@ -56,29 +99,47 @@ struct UserRow: View {
                         .frame(width: 20, height: 20)
                     Text(user.location).italic()
                 }
-            }.padding(.leading, 5)
+            }
             
         }
     }
 }
 
+// MARK:- Image Loader
+class ImageLoader: BindableObject {
+    var didChange = PassthroughSubject<Data, Never>()
+    
+    var data = Data() {
+        didSet {
+            didChange.send(data)
+        }
+    }
+    
+    init(imageUrl: String) {
+        guard let url = URL(string: imageUrl) else { return }
+        URLSession.shared.dataTask(with: url) { (data, _, _) in
+            
+            guard let data = data else { return }
+            
+            DispatchQueue.main.async {
+                self.data = data
+            }
+            
+            }.resume()
+    }
+}
+
+
 
 // MARK:- Content View
 struct ContentView : View {
     
-    let users: [User] = [
-        .init(id: 0, displayName: "Cicero", userName: "TulliusCicero", userImage: "veronica", message: "Blah blah blah blah blah", datePosted: "129 AD", location: "Roma", numLikes: 200, numDislikes: 100),
-        .init(id: 1, displayName: "Caesar", userName: "GaiusIulius", userImage: "veronica", message: "Veni, vidi, vici.", datePosted: "33 BC", location: "Roma", numLikes: 900, numDislikes: 200),
-        .init(id: 2, displayName: "Hadrianus", userName: "AntoninusAmo", userImage: "veronica", message: "I like traveling and GreekI like traveling and GreekI like traveling and GreekI like traveling and Greek", datePosted: "200 AD", location: "Roma", numLikes: 22, numDislikes: 90),
-        .init(id: 3, displayName: "Cicero", userName: "TullisadsadusCicero", userImage: "veronica", message: "Blah blah blah blah blah", datePosted: "24 AD", location: "Roma", numLikes: 200, numDislikes: 100),
-        .init(id: 4, displayName: "Cicero", userName: "sadada", userImage: "veronica", message: "Blah blah blah blah blah", datePosted: "400 BC", location: "Roma", numLikes: 200, numDislikes: 100),
-        
-    ]
+    @State var networkManager = NetworkManager()
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(users.identified(by: \.id)) { user in
+                ForEach(networkManager.users.identified(by: \.id)) { user in
                     UserRow(user: user)
                 }
             }.navigationBarTitle(Text("Sententia"))
